@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WC 2026 — Você seria convocado?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <h1>Copa do Mundo FIFA 2026</h1>
+    <p class="subtitle">Descubra se você seria convocado</p>
+  </header>
+
+  <main>
+    <!-- ── Painel de entrada ── -->
+    <section class="panel" id="input-panel">
+
+      <div class="input-group">
+        <label for="photo-upload">📸 Sua foto</label>
+        <input type="file" id="photo-upload" accept="image/*" />
+        <div id="photo-preview-wrap">
+          <img id="photo-preview" src="placeholder.svg" alt="Prévia da foto" />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="position-select">🏃 Posição</label>
+        <select id="position-select">
+          <option value="">Carregando...</option>
+        </select>
+      </div>
+
+      <div class="sliders" id="sliders-wrap">
+        <div class="slider-row slider-overall" data-attr="overall" data-label="OVR">
+          <span class="attr-label">OVR</span>
+          <input type="range" min="40" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+        <div class="slider-divider"></div>
+        <div class="slider-row" data-attr="pace"      data-label="PAC">
+          <span class="attr-label">PAC</span>
+          <input type="range" min="0" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+        <div class="slider-row" data-attr="shooting"  data-label="CHU">
+          <span class="attr-label">CHU</span>
+          <input type="range" min="0" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+        <div class="slider-row" data-attr="passing"   data-label="PAS">
+          <span class="attr-label">PAS</span>
+          <input type="range" min="0" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+        <div class="slider-row" data-attr="dribbling" data-label="DRI">
+          <span class="attr-label">DRI</span>
+          <input type="range" min="0" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+        <div class="slider-row" data-attr="defending" data-label="DEF">
+          <span class="attr-label">DEF</span>
+          <input type="range" min="0" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+        <div class="slider-row" data-attr="physic"    data-label="FÍS">
+          <span class="attr-label">FÍS</span>
+          <input type="range" min="0" max="99" value="70" />
+          <span class="attr-val">70</span>
+        </div>
+      </div>
+
+      <button id="generate-btn">⚽ Gerar Carta</button>
+    </section>
+
+    <!-- ── Resultado ── -->
+    <section class="panel" id="result-panel" hidden>
+
+      <!-- Carta FIFA -->
+      <div class="card-wrap">
+        <div class="fifa-card" id="fifa-card">
+          <div class="card-top">
+            <div class="card-overall" id="card-overall">70</div>
+            <div class="card-position" id="card-position">ST</div>
+            <div class="card-flags">
+              <span>🏳️</span>
+            </div>
+          </div>
+          <div class="card-photo-wrap">
+            <img id="card-photo" src="placeholder.svg" alt="jogador" />
+          </div>
+          <div class="card-attrs">
+            <div class="ca"><span class="ca-val" id="ca-pac">70</span><span class="ca-name">PAC</span></div>
+            <div class="ca"><span class="ca-val" id="ca-sho">70</span><span class="ca-name">CHU</span></div>
+            <div class="ca"><span class="ca-val" id="ca-pas">70</span><span class="ca-name">PAS</span></div>
+            <div class="ca"><span class="ca-val" id="ca-dri">70</span><span class="ca-name">DRI</span></div>
+            <div class="ca"><span class="ca-val" id="ca-def">70</span><span class="ca-name">DEF</span></div>
+            <div class="ca"><span class="ca-val" id="ca-phy">70</span><span class="ca-name">FÍS</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Veredito -->
+      <div class="verdict" id="verdict">
+        <div class="verdict-badge" id="verdict-badge"></div>
+        <div class="verdict-text" id="verdict-text"></div>
+        <div class="verdict-prob" id="verdict-prob"></div>
+      </div>
+
+      <button id="reset-btn">← Tentar novamente</button>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

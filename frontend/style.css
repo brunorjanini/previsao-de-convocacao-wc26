@@ -1,0 +1,345 @@
+/* ── Reset e base ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --gold-1: #c9a227;
+  --gold-2: #f5d060;
+  --gold-3: #7a5c00;
+  --card-bg-1: #1a1200;
+  --card-bg-2: #3d2b00;
+  --dark:  #0d0d0d;
+  --mid:   #1c1c1c;
+  --light: #f0e8d5;
+  --green: #27ae60;
+  --red:   #c0392b;
+  --font:  'Segoe UI', Arial, sans-serif;
+  --radius: 12px;
+}
+
+body {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1200 50%, #0a0a0a 100%);
+  color: var(--light);
+  font-family: var(--font);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+header {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+header h1 {
+  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  background: linear-gradient(90deg, var(--gold-1), var(--gold-2), var(--gold-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.subtitle {
+  color: #aaa;
+  margin-top: .4rem;
+  font-size: .95rem;
+  letter-spacing: 1px;
+}
+
+/* ── Main layout ─────────────────────────────────────────────── */
+main {
+  width: 100%;
+  max-width: 520px;
+  padding: 1rem 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ── Panel ───────────────────────────────────────────────────── */
+.panel {
+  background: var(--mid);
+  border: 1px solid #333;
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+/* ── Inputs ──────────────────────────────────────────────────── */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+.input-group label {
+  font-size: .85rem;
+  color: var(--gold-2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+input[type="file"] {
+  color: #ccc;
+  font-size: .85rem;
+  cursor: pointer;
+}
+
+#photo-preview-wrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 2px solid var(--gold-1);
+  overflow: hidden;
+  margin-top: .4rem;
+}
+#photo-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+select {
+  background: #2a2a2a;
+  color: var(--light);
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: .5rem .8rem;
+  font-size: .95rem;
+  cursor: pointer;
+}
+select:focus { outline: none; border-color: var(--gold-1); }
+
+/* ── Sliders ─────────────────────────────────────────────────── */
+.sliders {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.slider-row {
+  display: grid;
+  grid-template-columns: 40px 1fr 36px;
+  align-items: center;
+  gap: .6rem;
+}
+.attr-label {
+  font-size: .8rem;
+  color: var(--gold-2);
+  font-weight: 700;
+  text-align: right;
+}
+.attr-val {
+  font-size: .85rem;
+  font-weight: 700;
+  text-align: center;
+  background: #111;
+  border-radius: 4px;
+  padding: 2px 0;
+  min-width: 32px;
+}
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(to right, var(--gold-1) 0%, var(--gold-1) var(--pct, 70%), #444 var(--pct, 70%));
+  cursor: pointer;
+  width: 100%;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--gold-2);
+  border: 2px solid var(--gold-3);
+}
+
+/* ── Botão principal ─────────────────────────────────────────── */
+#generate-btn, #reset-btn {
+  padding: .85rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  transition: filter .2s, transform .1s;
+}
+#generate-btn {
+  background: linear-gradient(135deg, var(--gold-3), var(--gold-1), var(--gold-2));
+  color: #000;
+  text-transform: uppercase;
+}
+#generate-btn:hover  { filter: brightness(1.15); transform: scale(1.02); }
+#generate-btn:active { transform: scale(.97); }
+
+#reset-btn {
+  background: #2a2a2a;
+  color: #ccc;
+  border: 1px solid #444;
+}
+#reset-btn:hover { background: #333; }
+
+/* ── Carta FIFA ──────────────────────────────────────────────── */
+.card-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.fifa-card {
+  width: 220px;
+  height: 310px;
+  border-radius: 14px;
+  background: linear-gradient(150deg, #2a1c00 0%, #5a3c00 40%, #1a1000 100%);
+  border: 2px solid var(--gold-1);
+  box-shadow: 0 0 30px rgba(201,162,39,.5), inset 0 0 20px rgba(0,0,0,.6);
+  padding: 14px 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  animation: cardIn .4s ease;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: scale(.85) rotateY(-15deg); }
+  to   { opacity: 1; transform: scale(1) rotateY(0deg); }
+}
+
+.card-top {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.card-overall {
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--gold-2), var(--gold-1));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+  min-width: 60px;
+  text-align: center;
+}
+.card-position {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--gold-2);
+  margin-top: 4px;
+}
+.card-flags {
+  margin-left: auto;
+  font-size: 1.4rem;
+}
+
+.card-photo-wrap {
+  width: 130px;
+  height: 140px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid var(--gold-1);
+  margin: 4px 0;
+}
+.card-photo-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.card-attrs {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 6px;
+  padding: 6px 4px 2px;
+  border-top: 1px solid rgba(201,162,39,.4);
+}
+.ca {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+}
+.ca-val {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--gold-2);
+  line-height: 1;
+}
+.ca-name {
+  font-size: .55rem;
+  color: #bba060;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+/* ── Veredito ────────────────────────────────────────────────── */
+.verdict {
+  text-align: center;
+  padding: 1rem;
+  border-radius: 10px;
+  background: #111;
+  border: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  animation: fadeIn .5s ease .2s both;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.verdict-badge {
+  font-size: 2.8rem;
+}
+.verdict-text {
+  font-size: 1.25rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.verdict-text.convocado    { color: var(--green); }
+.verdict-text.nao-convocado { color: var(--red); }
+
+.verdict-prob {
+  font-size: .9rem;
+  color: #aaa;
+}
+
+/* ── Slider overall destacado ────────────────────────────────── */
+.slider-overall {
+  background: rgba(201,162,39,.08);
+  border: 1px solid rgba(201,162,39,.25);
+  border-radius: 6px;
+  padding: 6px 8px;
+}
+.slider-overall .attr-label { font-size: .85rem; }
+.slider-overall .attr-val   { font-size: 1rem; font-weight: 900; color: var(--gold-2); }
+.slider-divider {
+  height: 1px;
+  background: rgba(255,255,255,.08);
+  margin: 2px 0;
+}
+
+/* ── Error toast ─────────────────────────────────────────────── */
+#error-toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #c0392b;
+  color: #fff;
+  padding: .7rem 1.4rem;
+  border-radius: 8px;
+  font-size: .9rem;
+  display: none;
+  z-index: 100;
+}
