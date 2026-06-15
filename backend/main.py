@@ -11,6 +11,11 @@ import json
 import os
 from pathlib import Path
 from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+
+import base64
+import smtplib
+from email.message import EmailMessage
 
 import pandas as pd
 import numpy as np
@@ -25,10 +30,24 @@ MODEL_PATH  = MODELS_DIR / "feira_model.joblib"
 META_PATH   = MODELS_DIR / "feira_model_meta.json"
 THRESH_PATH = MODELS_DIR / "thresholds.json"
 
+load_dotenv()
+
+EMAIL_USER     = os.getenv("EMAIL_USER")
+EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
+
 _model     = None
 _meta      = None
 _threshold = 0.5          # default; substituído pelo ótimo se disponível
 
+class PredictionOutput(BaseModel):
+    convocated:  bool
+    probability: float
+    overall:     int
+
+class SendCardRequest(BaseModel):
+    email: str
+    image: str
+    player_name: str
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -155,3 +174,48 @@ def positions():
 @app.get("/health")
 def health():
     return {"status": "ok", "model_loaded": _model is not None}
+
+
+@app.post("/send-card")
+def send_card(req: SendCardRequest):
+    if not EMAIL_USER or not EMAIL_PASSWORD:
+        raise HTTPException(
+            status_code=500,
+            detail="EMAIL_USER ou EMAIL_PASSWORD não configurados no .env."
+        )
+
+    try:
+        image_bytes = base64.b64decode(req.image.split(",")[1])
+
+        msg = EmailMessage()
+        msg["Subject"] = "Sua Carta FIFA World Cup 2026"
+        msg["From"]    = EMAIL_USER
+        msg["To"]      = req.email
+        msg.set_content(
+            f"Olá!\n\nSegue em anexo a carta FIFA gerada para {req.player_name}.\n\n"
+            "Obrigado por utilizar nosso preditor de convocação da Copa do Mundo 2026."
+        )
+        msg.add_attachment(
+            image_bytes,
+            maintype="image",
+            subtype="png",
+            filename=f"{req.player_name}.png",
+        )
+
+        # Tenta SSL na porta 465 primeiro; se falhar, tenta STARTTLS na 587
+        smtp_host = "smtp.gmail.com"
+        try:
+            with smtplib.SMTP_SSL(smtp_host, 465) as smtp:
+                smtp.login(EMAIL_USER, EMAIL_PASSWORD)
+                smtp.send_message(msg)
+        except Exception:
+            with smtplib.SMTP(smtp_host, 587) as smtp:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.login(EMAIL_USER, EMAIL_PASSWORD)
+                smtp.send_message(msg)
+
+        return {"success": True, "message": f"Email enviado para {req.email}"}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Erro ao enviar email: {str(e)}")
