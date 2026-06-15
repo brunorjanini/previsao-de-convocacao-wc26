@@ -1,0 +1,37 @@
+{
+  "feature_cols": [
+    "pace",
+    "shooting",
+    "passing",
+    "dribbling",
+    "defending",
+    "physic",
+    "primary_position_CAM",
+    "primary_position_CB",
+    "primary_position_CDM",
+    "primary_position_CM",
+    "primary_position_GK",
+    "primary_position_LB",
+    "primary_position_LM",
+    "primary_position_LW",
+    "primary_position_RB",
+    "primary_position_RM",
+    "primary_position_RW",
+    "primary_position_ST"
+  ],
+  "position_prefix": "primary_position_",
+  "positions": [
+    "CAM",
+    "CB",
+    "CDM",
+    "CM",
+    "GK",
+    "LB",
+    "LM",
+    "LW",
+    "RB",
+    "RM",
+    "RW",
+    "ST"
+  ]
+}

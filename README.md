@@ -60,6 +60,8 @@ O projeto treina dois modelos com propósitos distintos:
 
 ## Setup
 
+### Pipeline de ML
+
 ```bash
 # 1. Clone o repositório
 git clone <repo-url>
@@ -70,6 +72,32 @@ source ml/.venv/bin/activate
 
 # 3. Instale dependências
 pip install -r requirements.txt
+```
+
+### Backend (API)
+
+```bash
+# Instale as dependências do backend
+pip install -r backend/requirements.txt
+
+# Inicie o servidor (a partir da raiz do repositório)
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Endpoints disponíveis:
+
+| Método | Rota | Descrição |
+|--------|------|-----------|
+| `POST` | `/predict` | Recebe atributos do jogador e retorna `{ convocated, probability, overall }` |
+| `GET` | `/positions` | Lista as posições válidas aceitas pelo modelo |
+| `GET` | `/health` | Verifica se o modelo foi carregado |
+
+**Exemplo:**
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"position":"ST","pace":90,"shooting":85,"passing":70,"dribbling":88,"defending":30,"physic":75}'
+# → {"convocated":true,"probability":0.9673,"overall":83}
 ```
 
 ---
@@ -134,10 +162,13 @@ previsao-de-convocacao-wc26/
 │   ├── models/                         ← Modelos treinados (.joblib)
 │   │   ├── research_model.joblib       ← Melhor modelo Pesquisa (XGBoost)
 │   │   ├── feira_model.joblib          ← Melhor modelo Feira (XGBoost)
+│   │   ├── feira_model_meta.json       ← Metadados de features/posições (requerido pela API)
 │   │   ├── research_{dt,xgb,knn}.joblib
 │   │   └── feira_{dt,xgb,knn}.joblib
 │   └── .venv/                          ← Ambiente virtual Python 3.13
-├── backend/                            ← [TODO Entrega 2] API servindo o Modelo da Feira
+├── backend/                            ← API FastAPI servindo o Modelo da Feira
+│   ├── main.py                         ← Endpoints /predict /positions /health
+│   └── requirements.txt
 ├── frontend/                           ← [TODO Entrega 2] Interface gerador de cartas FIFA
 ├── requirements.txt
 └── CLAUDE.md                           ← Guia operacional interno (para Claude Code)
@@ -158,7 +189,7 @@ previsao-de-convocacao-wc26/
 | Script 5 — gráfico comparativo consolidado | ✅ Completo |
 | Gráficos de métricas e importância de features | ✅ Completo (11 PNGs) |
 | Modelos salvos (`.joblib`) | ✅ 8 arquivos (6 por-algoritmo + 2 canônicos) |
-| Backend / API | ❌ Não implementado (Entrega 2) |
+| Backend / API FastAPI | ✅ Completo (`/predict`, `/positions`, `/health`) |
 | Frontend / gerador de cartas | ❌ Não implementado (Entrega 2) |
 
 ---
@@ -166,4 +197,5 @@ previsao-de-convocacao-wc26/
 ## Entregas
 
 - **Entrega 1 ✅:** Pipeline de dados + 3 algoritmos treinados e avaliados para ambas as branches. Gráficos de métricas, matrizes de confusão, importância de features e comparação consolidada gerados em `data/processed/charts/`.
-- **Entrega 2 [TODO]:** Backend com API servindo o `feira_model.joblib` conectado a uma interface visual (gerador de cartas estilo FIFA) para uso interativo da plateia.
+- **Entrega 2 — Backend ✅:** API FastAPI servindo o `feira_model.joblib` com endpoints `/predict`, `/positions` e `/health`. Calcula ou estima o `overall` por posição.
+- **Entrega 2 — Frontend [TODO]:** Interface visual (gerador de cartas estilo FIFA) para uso interativo da plateia, consumindo a API.
