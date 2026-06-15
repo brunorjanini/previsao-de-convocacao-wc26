@@ -23,6 +23,10 @@ DROP_IDENTIFIERS = [
     "fifa_version", "fifa_update", "fifa_update_date",
     "short_name", "long_name",
     "dob", "club_joined_date",
+    "league_id", "league_name",
+      "club_team_id", "club_name","club_jersey_number",
+      "nationality_id", "nationality_name",
+      "club_contract_valid_until",
 ]
 
 # data leakage: indicam participação em seleção nacional no momento do snapshot
