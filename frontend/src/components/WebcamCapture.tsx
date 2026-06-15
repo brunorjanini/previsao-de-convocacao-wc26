@@ -8,27 +8,32 @@ interface WebcamCaptureProps {
 export function WebcamCapture({ onCapture, photo }: WebcamCaptureProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
   const [streaming, setStreaming] = useState(false);
   const [denied, setDenied] = useState(false);
 
   const startCamera = useCallback(async () => {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-        setStreaming(true);
-        setDenied(false);
-      }
+      streamRef.current = stream;
+      setStreaming(true);
+      setDenied(false);
     } catch {
       setDenied(true);
     }
   }, []);
 
-  const stopCamera = useCallback(() => {
-    if (videoRef.current?.srcObject) {
-      (videoRef.current.srcObject as MediaStream).getTracks().forEach((t) => t.stop());
-      videoRef.current.srcObject = null;
+  // Anexa o stream ao elemento <video> depois que ele monta no DOM
+  useEffect(() => {
+    if (streaming && videoRef.current && streamRef.current) {
+      videoRef.current.srcObject = streamRef.current;
     }
+  }, [streaming]);
+
+  const stopCamera = useCallback(() => {
+    streamRef.current?.getTracks().forEach((t) => t.stop());
+    streamRef.current = null;
+    if (videoRef.current) videoRef.current.srcObject = null;
     setStreaming(false);
   }, []);
 

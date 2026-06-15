@@ -89,7 +89,7 @@ export default function App() {
 
         {/* Rodape */}
         <footer className="mt-16 text-center text-blue-700 text-xs">
-          Projeto IAC — USP · Previsão com XGBoost + EA FC 26
+          Projeto IA — USP · Previsão com XGBoost + EA FC 26
         </footer>
       </div>
     </div>
