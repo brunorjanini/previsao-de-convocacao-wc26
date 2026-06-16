@@ -28,10 +28,13 @@ export default function App() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-6 py-10">
-
         {/* Header */}
         <header className="flex items-center gap-5 mb-10">
-          <img src={fifaIcon} alt="FIFA World Cup 2026" className="h-20 w-auto object-contain flex-shrink-0" />
+          <img
+            src={fifaIcon}
+            alt="FIFA World Cup 2026"
+            className="h-20 w-auto object-contain flex-shrink-0"
+          />
           <div>
             <h1 className="text-3xl font-black text-white tracking-tight leading-tight">
               Copa do Mundo FIFA 2026
@@ -47,7 +50,6 @@ export default function App() {
 
         {/* Layout: Campo | Formulario | Carta */}
         <div className="flex flex-col lg:flex-row gap-6 items-start">
-
           {/* Campo de futebol — coluna esquerda */}
           <div className="w-full lg:w-64 flex-shrink-0 flex flex-col gap-2">
             <p className="text-xs font-bold text-amber-300 tracking-widest uppercase">
@@ -61,7 +63,14 @@ export default function App() {
             <PlayerForm
               onResult={(result, input, photo, name) => {
                 setCard({ result, input, photo, playerName: name });
-                setTimeout(() => cardRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" }), 50);
+                setTimeout(
+                  () =>
+                    cardRef.current?.scrollIntoView({
+                      behavior: "smooth",
+                      block: "nearest",
+                    }),
+                  50,
+                );
               }}
               onPositionChange={setCurrentPosition}
             />
@@ -75,10 +84,18 @@ export default function App() {
                 input={card.input}
                 photo={card.photo}
                 playerName={card.playerName}
+                cardRef={cardRef}
               />
             ) : (
-              <div className="w-full rounded-2xl border-2 border-dashed border-blue-700 bg-blue-950/30 flex flex-col items-center justify-center gap-4 py-20 px-6" style={{ aspectRatio: "4/3" }}>
-                <img src={fifaIcon} alt="" className="h-14 w-auto object-contain opacity-20" />
+              <div
+                className="w-full rounded-2xl border-2 border-dashed border-blue-700 bg-blue-950/30 flex flex-col items-center justify-center gap-4 py-20 px-6"
+                style={{ aspectRatio: "4/3" }}
+              >
+                <img
+                  src={fifaIcon}
+                  alt=""
+                  className="h-14 w-auto object-contain opacity-20"
+                />
                 <p className="text-blue-400 font-semibold text-sm text-center">
                   Sua carta aparece aqui
                 </p>
