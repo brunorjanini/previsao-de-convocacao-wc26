@@ -71,10 +71,12 @@ cd previsao-de-convocacao-wc26
 source ml/.venv/bin/activate
 
 # 3. Instale dependências
-pip install -r requirements.txt
+pip install -r ml/requirements.txt
 ```
 
 ### Backend (API)
+
+> Requer o ambiente virtual do ML ativo (`source ml/.venv/bin/activate`) ou as dependências do backend instaladas separadamente.
 
 ```bash
 # Instale as dependências do backend
@@ -100,28 +102,75 @@ curl -X POST http://localhost:8000/predict \
 # → {"convocated":true,"probability":0.9673,"overall":83}
 ```
 
+### Frontend (gerador de cartas FIFA)
+
+> Requer Node.js e npm. O **backend deve estar rodando** na porta 8000 antes de abrir o frontend.
+
+```bash
+cd frontend
+
+# Instale as dependências (apenas na primeira vez)
+npm install
+
+# Inicie o servidor de desenvolvimento
+npm run dev
+# → http://localhost:5173
+```
+
+Para gerar o build de produção:
+
+```bash
+cd frontend
+npm run build      # gera frontend/dist/
+npm run preview    # visualiza o build localmente
+```
+
+### Rodando o sistema completo (backend + frontend)
+
+Abra dois terminais a partir da raiz do repositório:
+
+**Terminal 1 — Backend:**
+```bash
+source ml/.venv/bin/activate
+uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+**Terminal 2 — Frontend:**
+```bash
+cd frontend
+npm install   # apenas na primeira vez
+npm run dev
+```
+
+Acesse `http://localhost:5173` no navegador.
+
 ---
 
 ## Pipeline
 
 Os scripts devem ser executados **dentro de `ml/scripts/`** (os caminhos relativos apontam para `../../data/`).
 
+
+
 ```bash
+# Passo 1 - Ative o ambiente virtual (Python 3.13)
+source ml/.venv/bin/activate
+
 cd ml/scripts
 
-# Passo 1 — Extrai as listas de convocados do PDF oficial da FIFA
+# Passo 2 — Extrai as listas de convocados do PDF oficial da FIFA
 python 1-convocados_wc2026.py
 # → data/interim/convocados_wc2026.csv  (1.248 jogadores convocados)
 
-# Passo 2 — Cruza jogadores do EA FC 26 com os convocados (fuzzy match por nome + DOB)
+# Passo 3 — Cruza jogadores do EA FC 26 com os convocados (fuzzy match por nome + DOB)
 python 2-add_is_convocated.py
 # → data/interim/fifa_with_convocados.csv
 
-# Passo 3 — Limpeza, imputação e encoding → dataset ML-ready
+# Passo 4 — Limpeza, imputação e encoding → dataset ML-ready
 python 3-prepare_dataset.py
 # → data/processed/dataset_final.csv
 
-# Passo 4 — Treina os 3 algoritmos (ambas as branches)
+# Passo 5 — Treina os 3 algoritmos (ambas as branches)
 python 4-1-decision_tree_model.py
 python 4-2-xgboost_model.py
 python 4-3-knn_model.py
@@ -130,7 +179,7 @@ python 4-3-knn_model.py
 # → ml/models/feira_model.joblib     (melhor: XGBoost)
 # → data/processed/model_comparison.csv
 
-# Passo 5 — Gráfico consolidado comparando todos os modelos
+# Passo 6 — Gráfico consolidado comparando todos os modelos
 python 5-compare_models.py
 # → data/processed/charts/comparison_all_models.png
 ```
@@ -169,7 +218,19 @@ previsao-de-convocacao-wc26/
 ├── backend/                            ← API FastAPI servindo o Modelo da Feira
 │   ├── main.py                         ← Endpoints /predict /positions /health
 │   └── requirements.txt
-├── frontend/                           ← [TODO Entrega 2] Interface gerador de cartas FIFA
+├── frontend/                           ← React + Vite + Tailwind CSS (gerador de cartas FIFA)
+│   ├── src/
+│   │   ├── api.ts                      ← Chamadas HTTP ao backend (http://localhost:8000)
+│   │   ├── App.tsx                     ← Layout principal (campo | formulário | carta)
+│   │   └── components/
+│   │       ├── PlayerForm.tsx          ← Formulário de atributos + webcam
+│   │       ├── PaniniCard.tsx          ← Carta estilo FIFA com resultado
+│   │       ├── FootballField.tsx       ← Campo visual com posição destacada
+│   │       ├── StatSlider.tsx          ← Slider de atributos (0–99)
+│   │       ├── WebcamCapture.tsx       ← Captura de foto pela webcam
+│   │       └── SendCardModal.tsx       ← Envio da carta por e-mail
+│   ├── package.json
+│   └── vite.config.ts
 ├── requirements.txt
 └── CLAUDE.md                           ← Guia operacional interno (para Claude Code)
 ```
@@ -190,7 +251,7 @@ previsao-de-convocacao-wc26/
 | Gráficos de métricas e importância de features | ✅ Completo (11 PNGs) |
 | Modelos salvos (`.joblib`) | ✅ 8 arquivos (6 por-algoritmo + 2 canônicos) |
 | Backend / API FastAPI | ✅ Completo (`/predict`, `/positions`, `/health`) |
-| Frontend / gerador de cartas | ❌ Não implementado (Entrega 2) |
+| Frontend / gerador de cartas | ✅ Completo (React + Vite, `http://localhost:5173`) |
 
 ---
 
@@ -198,4 +259,4 @@ previsao-de-convocacao-wc26/
 
 - **Entrega 1 ✅:** Pipeline de dados + 3 algoritmos treinados e avaliados para ambas as branches. Gráficos de métricas, matrizes de confusão, importância de features e comparação consolidada gerados em `data/processed/charts/`.
 - **Entrega 2 — Backend ✅:** API FastAPI servindo o `feira_model.joblib` com endpoints `/predict`, `/positions` e `/health`. Calcula ou estima o `overall` por posição.
-- **Entrega 2 — Frontend [TODO]:** Interface visual (gerador de cartas estilo FIFA) para uso interativo da plateia, consumindo a API.
+- **Entrega 2 — Frontend ✅:** Interface React com gerador de cartas estilo FIFA. A plateia insere atributos, tira uma foto pela webcam e recebe a predição em uma carta FIFA animada. Inclui envio da carta por e-mail.
