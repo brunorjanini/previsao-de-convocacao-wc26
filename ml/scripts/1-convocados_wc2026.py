@@ -104,12 +104,9 @@ def flag_convocated(df_base: pd.DataFrame,
 
 
 if __name__ == "__main__":
-    #current_dir = os.getcwd()
-    #print("Current Working Directory:", current_dir)
+    current_dir = os.getcwd()
     df_convocados = extract_convocados("../../data/raw/SquadLists-English.pdf")
-    print(df_convocados.shape)          # (1248, 11) -> 48 seleções x 26 jogadores
     df_convocados.to_csv("../../data/interim/convocados_wc2026.csv", index=False)
-
-    # Exemplo de uso com o seu DataFrame maior:
-    # df_grande = pd.read_csv("seu_dataframe.csv")
-    # df_grande = flag_convocated(df_grande, df_convocados, name_col="player_name")
+    print(f"arquivo salvo em: ../../data/interim/convocados_wc2026.csv")
+    print(f"total de convocados extraídos: {len(df_convocados)}")
+   
