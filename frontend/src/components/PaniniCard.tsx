@@ -99,7 +99,6 @@ function SendCardModal({ cardRef, playerName, onClose }: SendCardModalProps) {
     setErrorMsg("");
 
     try {
-      await document.fonts.ready;
       const cardEl =
         cardRef.current.querySelector<HTMLElement>(".panini-card-root");
       const image = await toPng(cardEl ?? cardRef.current, {
