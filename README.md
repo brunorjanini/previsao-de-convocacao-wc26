@@ -63,14 +63,18 @@ O projeto treina dois modelos com propósitos distintos:
 ### Pipeline de ML
 
 ```bash
-# 1. Clone o repositório
+# 1. Clone o repositório e entre na pasta
 git clone <repo-url>
 cd previsao-de-convocacao-wc26
 
-# 2. Ative o ambiente virtual (Python 3.13)
+# 2. Crie o ambiente virtual indicando o Python 3.13
+python -m venv ml/.venv
+# (ou python3.13 -m venv ml/.venv, dependendo de como o binário está mapeado no seu sistema)
+
+# 3. Ative o ambiente virtual
 source ml/.venv/bin/activate
 
-# 3. Instale dependências
+# 4. Instale as dependências limpas no seu novo ambiente
 pip install -r ml/requirements.txt
 ```
 
