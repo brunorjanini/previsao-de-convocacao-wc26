@@ -232,7 +232,6 @@ previsao-de-convocacao-wc26/
 │   ├── package.json
 │   └── vite.config.ts
 ├── requirements.txt
-└── CLAUDE.md                           ← Guia operacional interno (para Claude Code)
 ```
 
 ---
