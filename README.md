@@ -236,27 +236,3 @@ previsao-de-convocacao-wc26/
 ```
 
 ---
-
-## Status Atual
-
-| Componente | Status |
-|---|---|
-| Script 1 — extração de convocados do PDF | ✅ Completo |
-| Script 2 — cruzamento fuzzy por nome + DOB | ✅ Completo |
-| Script 3 — preparação do dataset | ✅ Completo |
-| Script 4-1 — Árvore de Decisão (Pesquisa + Feira) | ✅ Completo |
-| Script 4-2 — XGBoost (Pesquisa + Feira) | ✅ Completo |
-| Script 4-3 — KNN (Pesquisa + Feira) | ✅ Completo |
-| Script 5 — gráfico comparativo consolidado | ✅ Completo |
-| Gráficos de métricas e importância de features | ✅ Completo (11 PNGs) |
-| Modelos salvos (`.joblib`) | ✅ 8 arquivos (6 por-algoritmo + 2 canônicos) |
-| Backend / API FastAPI | ✅ Completo (`/predict`, `/positions`, `/health`) |
-| Frontend / gerador de cartas | ✅ Completo (React + Vite, `http://localhost:5173`) |
-
----
-
-## Entregas
-
-- **Entrega 1 ✅:** Pipeline de dados + 3 algoritmos treinados e avaliados para ambas as branches. Gráficos de métricas, matrizes de confusão, importância de features e comparação consolidada gerados em `data/processed/charts/`.
-- **Entrega 2 — Backend ✅:** API FastAPI servindo o `feira_model.joblib` com endpoints `/predict`, `/positions` e `/health`. Calcula ou estima o `overall` por posição.
-- **Entrega 2 — Frontend ✅:** Interface React com gerador de cartas estilo FIFA. A plateia insere atributos, tira uma foto pela webcam e recebe a predição em uma carta FIFA animada. Inclui envio da carta por e-mail.
