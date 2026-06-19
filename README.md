@@ -85,7 +85,25 @@ pip install -r ml/requirements.txt
 ```bash
 # Instale as dependências do backend
 pip install -r backend/requirements.txt
+```
 
+#### Configuração do `.env` (envio de e-mail)
+
+Para que o envio de cartas por e-mail funcione, crie um arquivo `.env` na **raiz do repositório** com as seguintes variáveis:
+
+```env
+EMAIL_USER=seuemail@gmail.com
+EMAIL_PASSWORD=suasenhaDeApp
+```
+
+> **Importante:** o campo `EMAIL_PASSWORD` **não** é a senha da sua conta Google. Você deve gerar uma **Senha de App** (App Password):
+> 1. Acesse [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+> 2. Selecione o app (ex.: "Mail") e o dispositivo (ex.: "Outro — WC26")
+> 3. Copie a senha de 16 caracteres gerada e cole no campo `EMAIL_PASSWORD`
+>
+> A verificação em duas etapas precisa estar ativada na conta Google para gerar senhas de app.
+
+```bash
 # Inicie o servidor (a partir da raiz do repositório)
 uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
